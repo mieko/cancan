@@ -79,8 +79,12 @@ module CanCan
       resource_base.accessible_by(current_ability, authorization_action)
     end
 
+    def permitted(v)
+      v.respond_to?(:permit!) ? v.permit! : v
+    end
+
     def build_resource
-      resource = resource_base.new(resource_params || {})
+      resource = resource_base.new(permitted(resource_params || {}))
       assign_attributes(resource)
     end
 
@@ -103,7 +107,7 @@ module CanCan
       resource = find_resource
       if resource_params
         @controller.authorize!(authorization_action, resource) if @options[:authorize]
-        resource.attributes = resource_params
+        resource.attributes = permitted(resource_params)
       end
       resource
     end
