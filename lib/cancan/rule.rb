@@ -85,7 +85,7 @@ module CanCan
 
     def specificity
       specificity = 1
-      specificity += 1 if attributes? || conditions?
+      #specificity += 1 if attributes? || conditions?
       specificity += 2 unless base_behavior
       specificity
     end
